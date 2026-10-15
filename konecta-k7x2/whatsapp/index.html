@@ -249,7 +249,7 @@ footer{margin-top:28px;font-size:12.5px;color:var(--ink-3)}
           <label><input type="radio" name="mesmin" id="mm-min" value="min" checked><span><b>Mes con mínimo</b>Desde el tercer mes completo después de la salida en vivo: mínimo de 50.000 sesiones (USD 3.950, con la misma rampa por tramos).</span></label>
           <label><input type="radio" name="mesmin" id="mm-ramp" value="ramp"><span><b>Mes de rampa</b>Los dos primeros meses: solo el consumo real.</span></label>
         </div></div>
-        <div class="field w"><label for="golive">Mes de salida en vivo</label><div class="box"><select id="golive"></select></div><span class="hint">Referencia: la implementación se estima en 10 semanas desde la sesión de arranque.</span></div>
+        <div class="field w"><label for="golive">Mes de salida en vivo</label><div class="box"><select id="golive"></select></div><span class="hint">Referencia: la implementación se estima en 4 semanas desde la sesión de arranque.</span></div>
         <label class="check"><input type="checkbox" id="dia1"><span>La salida en vivo es el primer día del mes (ese mes cuenta como mes completo)</span></label>
         <div class="field"><label for="arr">Volumen del primer mes en vivo</label><div class="box"><input id="arr" type="number" min="0" max="100" step="5" value="50"><span>%</span></div><span class="hint">Supuesto para la proyección: porcentaje del volumen del paso 1.</span></div>
         <div class="field"><label for="arr-m">Mes en que llega al volumen completo</label><div class="box"><input id="arr-m" type="number" min="1" max="12" step="1" value="3"><span>mes</span></div></div>
@@ -346,7 +346,7 @@ footer{margin-top:28px;font-size:12.5px;color:var(--ink-3)}
           <li>Los cargos de Meta por plantillas (marketing, utilidad y autenticación) los paga la aseguradora directamente a Meta, en dólares, desde su Meta Business Manager. No están en nuestro precio. Tarifas de referencia para Colombia a octubre de 2026: marketing USD 0,0125 (≈ 40 COP), utilidad y autenticación USD 0,0008 (≈ 2,56 COP).</li>
           <li>SMS para la verificación: si la aseguradora tiene proveedor, nos integramos y ella paga ese servicio directamente; si no, DesarrollAndo lo contrata y factura cada mes los SMS enviados al costo del proveedor.</li>
           <li>Conservación extendida hasta 5 años, opcional: USD 0,002 por sesión conservada, cobrada una sola vez, en el mes en que ocurre la sesión. El valor se confirma por escrito antes de activarla.</li>
-          <li>Configuración de la Fase 1: USD 11.870, pago único en 2 pagos de USD 5.935, 50 % al iniciar y 50 % en la salida en vivo. Implementación estimada de 10 semanas desde la sesión de arranque, sujeta a la entrega a tiempo de documentación, ambientes y aprobaciones.</li>
+          <li>Configuración de la Fase 1: USD 11.870, pago único en 2 pagos de USD 5.935, 50 % al iniciar y 50 % en la salida en vivo. Implementación estimada de 4 semanas desde la sesión de arranque, sujeta a la entrega a tiempo de documentación, ambientes y aprobaciones.</li>
           <li>El asistente atiende las 24 horas, todos los días. Soporte a Konecta: nivel 1, de lunes a viernes, y nivel 2, de lunes a domingo, de 8:00 a. m. a 6:00 p. m., hora de Colombia.</li>
           <li>Garantía de ajustes sin costo durante 60 días después de la salida en vivo, dentro del alcance acordado.</li>
           <li>Son estimaciones, no un compromiso de consumo por encima del mínimo. Los resultados de la operación dependen del volumen, de las solicitudes y de los sistemas de la aseguradora; no garantizamos cifras de resultado.</li>
@@ -413,7 +413,7 @@ footer{margin-top:28px;font-size:12.5px;color:var(--ink-3)}
   function tarifa(s){for(var i=0;i<TRAMOS.length;i++){if(s<=TRAMOS[i].hasta)return TRAMOS[i].precio;}return TRAMOS[TRAMOS.length-1].precio;}
 
   // ---- mes de salida en vivo ----
-  (function(){var sel=$('golive'),y=2026,m=11;for(var i=0;i<15;i++){var o=document.createElement('option');o.value=y+'-'+m;o.textContent=MESES[m-1]+' de '+y;if(y===2027&&m===1)o.selected=true;sel.appendChild(o);m++;if(m>12){m=1;y++;}}})();
+  (function(){var sel=$('golive'),y=2026,m=11;for(var i=0;i<15;i++){var o=document.createElement('option');o.value=y+'-'+m;o.textContent=MESES[m-1]+' de '+y;if(y===2026&&m===12)o.selected=true;sel.appendChild(o);m++;if(m>12){m=1;y++;}}})();
 
   // ---- volumen ----
   function sesiones(){if($('modo-u').checked){var u=parseInt2($('usu').value);return Math.max(0,Math.round(u*val('spu',0,30)));}return Math.max(0,parseInt2($('ses').value));}
@@ -562,7 +562,7 @@ footer{margin-top:28px;font-size:12.5px;color:var(--ink-3)}
     if(t.c.comp>0)L.push('Incluye complemento al mínimo mensual: '+usd(t.c.comp));
     if(t.ext)L.push('Incluye conservación extendida a 5 años (USD 0,002 por sesión): '+usd(t.c.ext));
     L.push('Proyección de la operación, 12 meses desde '+t.rows[0].label+': '+usd(t.sum)+' (sin configuración ni Meta; con configuración: '+usd(SETUP+t.sum)+')');
-    L.push('Configuración: USD 11.870, pago único en 2 pagos de USD 5.935 (50 % al iniciar y 50 % en la salida en vivo); implementación estimada de 10 semanas desde la sesión de arranque');
+    L.push('Configuración: USD 11.870, pago único en 2 pagos de USD 5.935 (50 % al iniciar y 50 % en la salida en vivo); implementación estimada de 4 semanas desde la sesión de arranque');
     L.push('No incluido, lo paga la aseguradora a Meta: costo estimado de Meta '+usd(t.meta.usd)+' al mes: '+nf.format(t.meta.nM)+' plantillas de marketing, '+nf.format(t.meta.nU)+' de utilidad'+(t.meta.nA>0?', '+nf.format(t.meta.nA)+' de autenticación':'')+($('win').checked?', '+nf.format(t.meta.nW)+' mensajes cobrables dentro de la ventana (cambio anunciado por Meta, por confirmar)':''));
     L.push('Tarifas de referencia de Meta para Colombia a octubre de 2026: marketing USD 0,0125, utilidad y autenticación USD 0,0008. Meta las cobra en dólares y puede cambiarlas; las paga la aseguradora directamente a Meta.');
     L.push('SMS de verificación: '+nf.format(t.third.nSms)+' al mes'+(t.third.smsC!=null?' ≈ '+usd(t.third.smsC):'')+', aparte.');
